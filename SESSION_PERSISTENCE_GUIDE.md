@@ -360,3 +360,4 @@ El frontend ya está configurado correctamente. El problema está en el backend.
 3. ✅ El endpoint devuelve la estructura de datos esperada
 4. ✅ El endpoint maneja errores correctamente (401 para tokens inválidos)
 
+

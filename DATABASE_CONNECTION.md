@@ -330,3 +330,4 @@ DB_PASSWORD=tu-password
 - Si está en otro docker-compose o es independiente
 - Cualquier error que veas en los logs
 
+
