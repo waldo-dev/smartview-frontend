@@ -361,3 +361,4 @@ El frontend ya está configurado correctamente. El problema está en el backend.
 4. ✅ El endpoint maneja errores correctamente (401 para tokens inválidos)
 
 
+

@@ -5,9 +5,18 @@ import './Sidebar.css'
 const Sidebar = () => {
   const { user } = useAuth()
 
+  const isSuperAdmin = user?.role_id === 1
+
   const menuItems = [
     { path: '/dashboard', label: 'Dashboard', icon: '📊' },
     { path: '/dashboards', label: 'Mis Dashboards', icon: '📈' },
+    ...(isSuperAdmin
+      ? [
+          { path: '/company-dashboards', label: 'Dashboards por Compañía', icon: '🗂️' },
+          { path: '/company-assignments', label: 'Asignaciones (usuarios)', icon: '🧩' },
+          { path: '/companies', label: 'Compañías', icon: '🏢' }
+        ]
+      : []),
     { path: '/profile', label: 'Perfil', icon: '👤' }
   ]
 

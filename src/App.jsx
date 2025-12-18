@@ -7,6 +7,9 @@ import Dashboard from './pages/Dashboard/Dashboard'
 import DashboardsList from './pages/Dashboards/DashboardsList'
 import DashboardView from './pages/Dashboards/DashboardView'
 import Profile from './pages/Profile/Profile'
+import Companies from './pages/Companies/Companies'
+import CompanyDashboards from './pages/CompanyDashboards/CompanyDashboards'
+import CompanyAssignments from './pages/CompanyAssignments/CompanyAssignments'
 import './App.css'
 
 // Componente para proteger rutas
@@ -46,6 +49,10 @@ function App() {
         <Route path="dashboards" element={<DashboardsList />} />
         <Route path="dashboards/:id" element={<DashboardView />} />
         <Route path="profile" element={<Profile />} />
+        <Route path="companies" element={<Companies />} />
+        <Route path="company-dashboards" element={<CompanyDashboards />} />
+        {/* Solo role_id = 1 podrá ver el contenido de esta ruta (controlado en el componente) */}
+        <Route path="company-assignments" element={<CompanyAssignments />} />
       </Route>
 
       {/* Ruta 404 */}
