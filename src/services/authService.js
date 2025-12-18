@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://analytics.chilsmart.com/api'
+const API_URL = import.meta.env.VITE_API_URL || 'https://api.analytics.chilsmart.com/api'
 
 const api = axios.create({
   baseURL: API_URL,
