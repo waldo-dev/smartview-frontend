@@ -1,0 +1,21 @@
+.powerbi-embed-container {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+}
+
+.powerbi-embed {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+}
+
+.powerbi-error {
+  padding: 2rem;
+  text-align: center;
+  color: var(--danger-color);
+  background-color: #fee2e2;
+  border-radius: 0.5rem;
+}
+
+
