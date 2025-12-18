@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
 import { powerBIService } from '../../services/powerBIService'
 import './Dashboard.css'
 
 const Dashboard = () => {
+  const { user } = useAuth()
   const [stats, setStats] = useState({
     totalDashboards: 0,
     recentDashboards: []
@@ -35,6 +37,28 @@ const Dashboard = () => {
     loadData()
   }, [])
 
+  // Formatear fecha de creación
+  const formatDate = (dateString) => {
+    if (!dateString) return ''
+    const date = new Date(dateString)
+    return date.toLocaleDateString('es-ES', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    })
+  }
+
+  // Obtener iniciales del nombre
+  const getInitials = (name) => {
+    if (!name) return 'U'
+    return name
+      .split(' ')
+      .map(n => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2)
+  }
+
   if (loading) {
     return <div className="loading-container">Cargando...</div>
   }
@@ -42,8 +66,42 @@ const Dashboard = () => {
   return (
     <div className="dashboard-page">
       <div className="page-header">
-        <h1>Dashboard Principal</h1>
-        <p>Bienvenido a tu panel de control</p>
+        <div className="welcome-section">
+          <div className="welcome-avatar">
+            {getInitials(user?.name)}
+          </div>
+          <div className="welcome-content">
+            <h1>¡Bienvenido, {user?.name || 'Usuario'}! 👋</h1>
+            <p>Gestiona y visualiza tus dashboards de manera eficiente</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Información del usuario */}
+      <div className="user-info-card">
+        <div className="user-info-header">
+          <h2>Información de tu cuenta</h2>
+        </div>
+        <div className="user-info-grid">
+          <div className="info-item">
+            <span className="info-label">Email</span>
+            <span className="info-value">{user?.email || 'N/A'}</span>
+          </div>
+          <div className="info-item">
+            <span className="info-label">Estado</span>
+            <span className={`info-value status-badge ${user?.is_active ? 'active' : 'inactive'}`}>
+              {user?.is_active ? 'Activo' : 'Inactivo'}
+            </span>
+          </div>
+          <div className="info-item">
+            <span className="info-label">Miembro desde</span>
+            <span className="info-value">{formatDate(user?.createdAt) || 'N/A'}</span>
+          </div>
+          <div className="info-item">
+            <span className="info-label">ID de Usuario</span>
+            <span className="info-value info-id">{user?.id || 'N/A'}</span>
+          </div>
+        </div>
       </div>
 
       <div className="stats-grid">

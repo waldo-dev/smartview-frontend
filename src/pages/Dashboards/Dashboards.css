@@ -30,7 +30,7 @@
 .dashboard-thumbnail {
   width: 100%;
   height: 200px;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
   border-radius: 0.5rem;
   display: flex;
   align-items: center;
@@ -84,10 +84,28 @@
 
 .dashboard-view-container {
   max-width: 100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
 }
 
 .dashboard-view-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+  padding-bottom: 0.5rem;
+}
+
+.dashboard-view-header h1 {
+  font-size: 1.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.dashboard-view-header p {
+  font-size: 0.875rem;
+  margin: 0;
 }
 
 .dashboard-view-header h1 {
@@ -103,11 +121,16 @@
 
 .powerbi-container {
   width: 100%;
-  min-height: 600px;
+  height: calc(100vh - 180px);
+  min-height: 900px;
   background-color: var(--white);
   border-radius: 0.75rem;
   box-shadow: var(--shadow);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  position: relative;
 }
 
 .powerbi-placeholder {
@@ -147,11 +170,19 @@
 }
 
 .error-container {
-  background-color: #fee2e2;
+  background-color: #fef2f2;
   color: var(--danger-color);
-  padding: 1rem;
+  padding: 1.5rem;
   border-radius: 0.5rem;
   text-align: center;
+  border: 1px solid #fecaca;
+}
+
+.error-details {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-family: 'Courier New', monospace;
 }
 
 

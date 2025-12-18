@@ -1,41 +1,57 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { powerBIService } from '../../services/powerBIService'
+import PowerBIEmbed from '../../components/PowerBI/PowerBIEmbed'
 import './Dashboards.css'
 
 const DashboardView = () => {
   const { id } = useParams()
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const embedContainerRef = useRef(null)
+  const [dashboard, setDashboard] = useState(null)
+  const [embedConfig, setEmbedConfig] = useState(null)
 
   useEffect(() => {
     const loadDashboard = async () => {
+      if (!id) {
+        setError('ID de dashboard no proporcionado')
+        setLoading(false)
+        return
+      }
+
       try {
-        // Obtener información del dashboard y el embed token
-        // const dashboard = await powerBIService.getDashboard(id)
-        // const embedConfig = await powerBIService.getEmbedToken(id)
-        
-        // Aquí se integrará el embed de Power BI
-        // Por ahora mostramos un placeholder
-        
+        setLoading(true)
+        setError(null)
+
+        // Obtener información del dashboard
+        const dashboardData = await powerBIService.getDashboard(id)
+        setDashboard(dashboardData)
+
+        // Obtener embed token
+        const embedData = await powerBIService.getEmbedToken(id)
+        setEmbedConfig(embedData)
+
         setLoading(false)
       } catch (err) {
-        setError('Error al cargar el dashboard')
-        console.error(err)
+        console.error('Error al cargar el dashboard:', err)
+        const errorMessage = err.response?.data?.message || 
+                           err.message || 
+                           'Error al cargar el dashboard. Verifica que el ID sea correcto y que tengas acceso.'
+        setError(errorMessage)
         setLoading(false)
       }
     }
 
-    if (id) {
-      loadDashboard()
-    }
+    loadDashboard()
   }, [id])
 
   if (loading) {
     return (
       <div className="dashboard-view-container">
-        <div className="loading-container">Cargando dashboard...</div>
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p>Cargando dashboard...</p>
+        </div>
       </div>
     )
   }
@@ -43,7 +59,28 @@ const DashboardView = () => {
   if (error) {
     return (
       <div className="dashboard-view-container">
-        <div className="error-container">{error}</div>
+        <div className="dashboard-view-header">
+          <h1>Error al cargar el dashboard</h1>
+        </div>
+        <div className="error-container">
+          <p>{error}</p>
+          <p className="error-details">
+            ID: {id}
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!embedConfig || !embedConfig.embedUrl || !embedConfig.accessToken) {
+    return (
+      <div className="dashboard-view-container">
+        <div className="dashboard-view-header">
+          <h1>Error de configuración</h1>
+        </div>
+        <div className="error-container">
+          <p>No se pudo obtener el token de embed. Verifica la configuración del backend.</p>
+        </div>
       </div>
     )
   }
@@ -51,21 +88,18 @@ const DashboardView = () => {
   return (
     <div className="dashboard-view-container">
       <div className="dashboard-view-header">
-        <h1>Dashboard Power BI</h1>
+        <h1>{dashboard?.name || 'Dashboard Power BI'}</h1>
         <p>Visualización interactiva de datos</p>
       </div>
 
-      <div className="powerbi-container" ref={embedContainerRef}>
-        <div className="powerbi-placeholder">
-          <div className="placeholder-content">
-            <span className="placeholder-icon">📊</span>
-            <h2>Dashboard de Power BI</h2>
-            <p>El dashboard se cargará aquí una vez configurado el embed token</p>
-            <p className="placeholder-note">
-              ID: {id}
-            </p>
-          </div>
-        </div>
+      <div className="powerbi-container">
+        <PowerBIEmbed
+          embedUrl={embedConfig.embedUrl}
+          accessToken={embedConfig.accessToken}
+          embedId={embedConfig.embedId || embedConfig.id || id}
+          embedType={embedConfig.embedType || embedConfig.type || 'report'}
+          config={embedConfig.config || {}}
+        />
       </div>
     </div>
   )

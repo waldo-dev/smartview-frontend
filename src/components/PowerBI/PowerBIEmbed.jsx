@@ -73,6 +73,22 @@ const PowerBIEmbed = ({
     embeddedItem.off('loaded')
     embeddedItem.on('loaded', () => {
       console.log('Power BI embed cargado correctamente')
+      
+      // Forzar que el iframe use todo el espacio disponible
+      setTimeout(() => {
+        const iframe = embedContainerRef.current?.querySelector('iframe')
+        if (iframe) {
+          iframe.style.width = '100%'
+          iframe.style.height = '100%'
+          iframe.style.minHeight = '900px'
+          iframe.style.minWidth = '100%'
+          iframe.style.position = 'absolute'
+          iframe.style.top = '0'
+          iframe.style.left = '0'
+          iframe.style.right = '0'
+          iframe.style.bottom = '0'
+        }
+      }, 100)
     })
 
     embeddedItem.off('error')

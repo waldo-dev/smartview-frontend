@@ -1,4 +1,4 @@
-# smartview Frontend
+# chilsmartAnalitycs Frontend
 
 Frontend SaaS para visualización de dashboards Power BI desarrollado con React y Vite.
 

@@ -13,8 +13,12 @@
 
 .main-content {
   flex: 1;
-  padding: 2rem;
+  padding: 1.5rem;
   background-color: var(--bg-color);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 @media (max-width: 768px) {

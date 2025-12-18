@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import './Auth.css'
@@ -9,8 +9,27 @@ const Login = () => {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   
-  const { login } = useAuth()
+  const { login, user, loading: authLoading } = useAuth()
   const navigate = useNavigate()
+
+  // Redirigir si ya está autenticado
+  useEffect(() => {
+    if (!authLoading && user) {
+      navigate('/dashboard', { replace: true })
+    }
+  }, [user, authLoading, navigate])
+
+  // Mostrar loading mientras se verifica la sesión
+  if (authLoading) {
+    return (
+      <div className="auth-container">
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p>Verificando sesión...</p>
+        </div>
+      </div>
+    )
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -32,7 +51,7 @@ const Login = () => {
     <div className="auth-container">
       <div className="auth-card">
         <div className="auth-header">
-          <h1>smartview</h1>
+          <h1>chilsmartAnalitycs</h1>
           <p>Inicia sesión para acceder a tus dashboards</p>
         </div>
 

@@ -11,14 +11,17 @@ const DashboardsList = () => {
   useEffect(() => {
     const loadDashboards = async () => {
       try {
-        // const data = await powerBIService.getDashboards()
-        // setDashboards(data)
+        setLoading(true)
+        setError(null)
         
-        // Datos de ejemplo por ahora
-        setDashboards([])
+        const response = await powerBIService.getDashboards()
+        setDashboards(response.dashboards || response || [])
       } catch (err) {
-        setError('Error al cargar los dashboards')
-        console.error(err)
+        console.error('Error al cargar los dashboards:', err)
+        const errorMessage = err.response?.data?.message || 
+                           err.message || 
+                           'Error al cargar los dashboards'
+        setError(errorMessage)
       } finally {
         setLoading(false)
       }
